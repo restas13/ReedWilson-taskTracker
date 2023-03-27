@@ -4,9 +4,37 @@
 var currDate = dayjs().format('MMMM, dddd DD');
 var currDay = dayjs().format('DD');
 var date = $('#currentDay');
+var timeslots = $('.container-fluid').children('div');
+var buttons = $('.saveBtn');
 
+//console.log(timeslots);
 date.text('Today is: ' + currDate);
 
+renderSlots();
+
+function saveSlots() {
+  for(var i = 1; i < timeslots.length + 1; i++){
+    var savedText = $('#hour-' + i).children('.description');
+    var textcont = $('text-' + i);
+    console.log(savedText);
+    console.log(textcont);
+
+    localStorage.setItem('task-' + i, savedText.val());
+
+    
+    
+    
+
+  }
+}
+
+function renderSlots() {
+  for(var i = 1; i < timeslots.length + 1; i++){
+    var savedText = $('#hour-' + i).children('.description');
+
+    savedText.html(localStorage.getItem('task-' + i));
+  }
+}
 
 $(function () {
     // TODO: Add a listener for click events on the save button. This code should
@@ -28,3 +56,11 @@ $(function () {
     //
     // TODO: Add code to display the current date in the header of the page.
   });
+
+  buttons.on('click', function(event) {
+    event.preventDefault();
+
+    saveSlots();
+    renderSlots();
+  });
+ 
