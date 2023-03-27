@@ -2,28 +2,44 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 var currDate = dayjs().format('MMMM, dddd DD');
-var currDay = dayjs().format('DD');
+var currTime = dayjs().hour(14).format('H');
 var date = $('#currentDay');
 var timeslots = $('.container-fluid').children('div');
 var buttons = $('.saveBtn');
 
 //console.log(timeslots);
 date.text('Today is: ' + currDate);
+console.log(currTime);
 
 renderSlots();
+
+for(var i = 1; i < timeslots.length + 1; i++){
+  if ((i + 8) < currTime) {
+    $('#hour-' + i).removeClass('future');
+    $('#hour-' + i).removeClass('present');
+    $('#hour-' + i).addClass('past');
+  }else if ((i + 8) == currTime) {
+    $('#hour-' + i).removeClass('future');
+    $('#hour-' + i).removeClass('past');
+    $('#hour-' + i).addClass('present');
+  }else {
+    $('#hour-' + i).removeClass('present');
+    $('#hour-' + i).removeClass('past');
+    $('#hour-' + i).addClass('future');
+  }
+}
 
 function saveSlots() {
   for(var i = 1; i < timeslots.length + 1; i++){
     var savedText = $('#hour-' + i).children('.description');
-    var textcont = $('text-' + i);
+
     console.log(savedText);
-    console.log(textcont);
 
-    localStorage.setItem('task-' + i, savedText.val());
+    if ((i + 8) == currTime) {
+      savedText.html(localStorage.getItem('task-' + i));
+    }
 
-    
-    
-    
+    localStorage.setItem('task-' + i, savedText.val());   
 
   }
 }
@@ -31,8 +47,25 @@ function saveSlots() {
 function renderSlots() {
   for(var i = 1; i < timeslots.length + 1; i++){
     var savedText = $('#hour-' + i).children('.description');
+    if ((i + 8) == currTime) {
+      if (localStorage.getItem('task-' + i) == 'undefined') {
+        savedText.html('');
+        savedText.html('Current Time \n');
+      }else {
+        savedText.html('');
+        savedText.html('Current Time \n' + localStorage.getItem('task-' + i));
+      }
 
-    savedText.html(localStorage.getItem('task-' + i));
+      
+    }else {
+      if (localStorage.getItem('task-' + i) == 'undefined') {
+        savedText.html('');
+      }else {
+        savedText.html(localStorage.getItem('task-' + i));
+      }
+      
+    }
+    
   }
 }
 
