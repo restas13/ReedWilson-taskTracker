@@ -2,7 +2,7 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 var currDate = dayjs().format('MMMM, dddd DD');
-var currTime = dayjs().hour(14).format('H');
+var currTime = dayjs().format('H');
 var date = $('#currentDay');
 var timeslots = $('.container-fluid').children('div');
 var buttons = $('.saveBtn');
